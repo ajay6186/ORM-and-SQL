@@ -15,10 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from orm.views import ajay_orm_test
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', ajay_orm_test, name='your-api'),
+    path('api/sql/',include('sql.urls')),
+    path('api/orm/',include('orm.urls')),
 ]
