@@ -37,3 +37,21 @@ def select_all(request):
     return Response(data_list)
 
 
+
+@api_view(['GET'])
+def field_data_p(request):
+      with connection.cursor() as cursor:
+        cursor.execute("SELECT first_name, last_name, address, country from employees")
+        results = cursor.fetchall()
+        data_list = []
+      for result in results:
+            data = {
+                'first_name': result[0],
+                'last_name': result[1],
+                'address': result[2],
+                'country': result[3],
+            }
+            data_list.append(data)
+      return Response(data_list)
+
+

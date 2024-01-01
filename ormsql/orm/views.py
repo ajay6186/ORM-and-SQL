@@ -40,5 +40,22 @@ def select_all(request):
 
 
 
+
+@api_view(['GET'])
+def field_data_p(request):
+    data = Employee.objects.all().values_list('first_name','last_name','address','country')
+    response = []
+    for employee in data:
+         d={}
+         d['first_name'] = employee[0]
+         d['last_name'] = employee[1]
+         d['address'] = employee[2]
+         d['country'] = employee[3]
+         response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+
+
+
    #  employee_id = models.SmallIntegerField(primary_key=True)
   
