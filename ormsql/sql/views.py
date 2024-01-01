@@ -34,3 +34,19 @@ def select_all(request):
         d['photo_path'] =    r[17]
         response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def select_few_columns(request):
+    data = {'message': 'This response from SQL'}
+    cursor = connection.cursor()
+    cursor.execute("SELECT first_name, last_name, address, country FROM employees")
+    result = cursor.fetchall()
+    response = []
+    for r in result:
+        d = {}
+        d['first_name'] =    r[0]
+        d['last_name'] =    r[1]
+        d['address'] =    r[2]
+        d['country'] =    r[3]
+        response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)

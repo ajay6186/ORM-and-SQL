@@ -34,3 +34,17 @@ def select_all(request):
        d['photo_path']  = employee.photo_path 
        response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def select_few_columns(request):
+    data = Employee.objects.values('first_name', 'last_name', 'address', 'country')
+    response = []
+    for employee in data:
+       d ={}
+       d['first_name']  = employee.get('first_name')
+       d['last_name']  = employee.get('last_name')
+       d['title_of_courtesy']  = employee.get('title_of_courtesy')
+       d['address']  = employee.get('address')
+       d['country']  = employee.get('country')
+       response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
