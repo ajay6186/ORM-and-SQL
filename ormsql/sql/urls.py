@@ -3,6 +3,7 @@ from django.urls import path
 from sql.views import *
 urlpatterns = [
     path('select_all/',select_all),
-    path('field_data/', field_data_p),
-    
+    path('select_all_p/',select_all_p),
+    path('select_few_columns_p/', select_few_columns_p),
+    path('select_few_columns/',select_few_columns),
 ]
