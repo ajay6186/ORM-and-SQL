@@ -2,12 +2,16 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Employee, Product
+from .models import Employee, Products
+from .models import Employee, Products
 import json
 from datetime import date
 import base64
 from django.http import JsonResponse
 import base64
+from django.db.models import F
+
+
 from django.db.models import F, ExpressionWrapper, DecimalField, IntegerField
 
 @api_view(['GET'])
@@ -91,9 +95,26 @@ def select_few_columns(request):
        response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
 
+
+def Old_price_New_price_p(request):
+   #  data =  Products.objects.values('product_name','unit_price').annotate(Old_Price = F('unit_price'))
+    data = Products.objects.values('product_name').annotate(new_Price=F('unit_price')*2, Old_Price=F('unit_price')) 
+    print(data)
+    response = []
+    for product in data:
+        d = {}
+        d['product_name'] = product.get('product_name')
+        d['Old_price'] = product.get('Old_Price')
+        d['new_price'] = product.get('new_Price')
+        response.append(d)
+    return JsonResponse(response, safe=False)
+
+
+
+    
 @api_view(['GET'])
 def select_old_price_and_new_price(request):
-    products = Product.objects.values('product_name').annotate(new_Price=ExpressionWrapper(F('unit_price') * 2, output_field=IntegerField()), Old_Price=F('unit_price'))
+    products =  Products.objects.values('product_name').annotate(new_Price=ExpressionWrapper(F('unit_price') * 2, output_field=IntegerField()), Old_Price=F('unit_price'))
     response = []
     for product in products:
        d ={}
