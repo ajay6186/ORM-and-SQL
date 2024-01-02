@@ -118,10 +118,6 @@ def select_old_price_and_new_price(request):
         response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
 
-# SELECT 'Our customer=>' AS COMMENT,*
-
-# FROM CUSTOMERS;
-
 @api_view(['GET'])
 def select_report_with_comment(request):
     cursor = connection.cursor()
@@ -144,3 +140,15 @@ def select_report_with_comment(request):
         d['fax'] =    r[11]
         response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def select_distinct(request):
+    cursor = connection.cursor()
+    # DISTINCT ==> remove duplicate
+    cursor.execute("SELECT DISTINCT COUNTRY FROM CUSTOMERS")
+    result = cursor.fetchall()
+    response_dict = {}
+    response_dict['country'] = []
+    for r in result:
+        response_dict['country'].append(r[0])
+    return JsonResponse(response_dict, safe=False, status=status.HTTP_200_OK)

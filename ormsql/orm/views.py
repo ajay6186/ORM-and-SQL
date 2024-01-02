@@ -126,3 +126,15 @@ def select_report_with_comment(request):
 
        response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+# distinct_values = YourModel.objects.values('field1', 'field2').distinct()
+
+@api_view(['GET'])
+def select_distinct(request):
+    # DISTINCT ==> remove duplicate
+    customers = Customers.objects.values('country').distinct()
+    response_dict = {}
+    response_dict['country'] = []
+    for customer in customers:
+        response_dict['country'].append(customer.get('country'))
+    return JsonResponse(response_dict, safe=False, status=status.HTTP_200_OK)

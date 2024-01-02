@@ -8,4 +8,5 @@ urlpatterns = [
     path('select_few_columns_p/', select_few_columns_p),
     path('select_old_price_and_new_price/', select_old_price_and_new_price),
     path('select_report_with_comment/', select_report_with_comment),
+    path('select_distinct/', select_distinct),
 ]
