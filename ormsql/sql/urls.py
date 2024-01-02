@@ -6,4 +6,5 @@ urlpatterns = [
     path('select_all_p/',select_all_p),
     path('select_few_columns_p/', select_few_columns_p),
     path('select_few_columns/',select_few_columns),
+    path('Old_price_New_price_p/', Old_price_New_price_p),
 ]

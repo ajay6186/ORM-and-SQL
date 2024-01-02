@@ -102,3 +102,29 @@ def select_few_columns(request):
         d['country'] =    r[3]
         response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def Old_price_New_price_p(request):
+      with connection.cursor() as cursor:
+        cursor.execute("select  product_name, unit_price as old_price, unit_price*2 as new_price  from products")
+        results = cursor.fetchall()
+        data_list = []
+      for result in results:
+            data = {
+                'product_name': result[0],
+                'old_price': result[1],
+                'unit_price': result[2],
+               
+            }
+            data_list.append(data)
+      return Response(data_list)
+
+
+# SELECT PRODUCT_NAME,
+
+# UNIT_PRICE AS Old_Price,
+
+# UNIT_PRICE*2 AS new_Price
+
+# FROM PRODUCTS;
