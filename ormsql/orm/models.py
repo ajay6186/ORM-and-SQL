@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 # myapp/models.py
 
@@ -28,11 +27,6 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.first_name
-
-
-from django.db import models
-
-from django.db import models
 
 class Categories(models.Model):
     category_id = models.SmallIntegerField(primary_key=True)
@@ -99,4 +93,3 @@ class Product(models.Model):
 # class Meta:
 #     db_table = 'products'
 #     unique_together = ['product_id', 'product_name']
-

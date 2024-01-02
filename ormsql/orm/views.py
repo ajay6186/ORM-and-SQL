@@ -9,6 +9,8 @@ import base64
 from django.http import JsonResponse
 import base64
 from django.db.models import F, ExpressionWrapper, DecimalField, IntegerField
+from customers.models import Customers
+from django.db.models import Value
 
 @api_view(['GET'])
 def select_all(request):
@@ -100,5 +102,27 @@ def select_old_price_and_new_price(request):
        d['product_name']  = product.get('product_name')
        d['new_Price']  = product.get('new_Price')
        d['Old_Price']  = product.get('Old_Price')
+       response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def select_report_with_comment(request):
+    customers = Customers.objects.all().annotate(comment = Value('Our Comments ==>'))
+    response = []
+    for customer in customers:
+       d ={}
+       d['comment']  = customer.comment
+       d['customer_id']  = customer.customer_id
+       d['company_name']  = customer.company_name
+       d['contact_name']  = customer.contact_name
+       d['contact_title']  = customer.contact_title
+       d['address']  = customer.address
+       d['city']  = customer.city
+       d['region']  = customer.region
+       d['postal_code']  = customer.postal_code
+       d['country']  = customer.country
+       d['phone']  = customer.phone
+       d['fax']  = customer.fax
+
        response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)

@@ -41,6 +41,12 @@ INSTALLED_APPS = [
     'orm',
     'sql',
     'account',
+    'others',
+    'staff',
+    'store',
+    'customers',
+    'customer',
+    'address',
 ]
 
 MIDDLEWARE = [

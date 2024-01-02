@@ -117,3 +117,30 @@ def select_old_price_and_new_price(request):
         d['new_Price'] =    r[2]
         response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+# SELECT 'Our customer=>' AS COMMENT,*
+
+# FROM CUSTOMERS;
+
+@api_view(['GET'])
+def select_report_with_comment(request):
+    cursor = connection.cursor()
+    cursor.execute("SELECT 'Our customer=>' AS COMMENT,* FROM CUSTOMERS")
+    result = cursor.fetchall()
+    response = []
+    for r in result:
+        d = {}
+        d['comment'] =    r[0]
+        d['customer_id'] =    r[1]
+        d['company_name'] =    r[2]
+        d['contact_name'] =    r[3]
+        d['contact_title'] =    r[4]
+        d['address'] =    r[5]
+        d['city'] =    r[6]
+        d['region'] =    r[7]
+        d['postal_code'] =    r[8]
+        d['country'] =    r[9]
+        d['phone'] =    r[10]
+        d['fax'] =    r[11]
+        response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
