@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Employee, Products
+from .models import Employee, Products
 import json
 from datetime import date
 import base64
@@ -11,6 +12,7 @@ import base64
 from django.db.models import F
 
 
+from django.db.models import F, ExpressionWrapper, DecimalField, IntegerField
 
 @api_view(['GET'])
 def select_all(request):
@@ -66,9 +68,6 @@ def select_all_p(request):
         response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
 
-
-
-
 @api_view(['GET'])
 def select_few_columns_p(request):
     data = Employee.objects.all().values_list('first_name','last_name','address','country')
@@ -113,3 +112,14 @@ def Old_price_New_price_p(request):
 
 
     
+@api_view(['GET'])
+def select_old_price_and_new_price(request):
+    products =  Products.objects.values('product_name').annotate(new_Price=ExpressionWrapper(F('unit_price') * 2, output_field=IntegerField()), Old_Price=F('unit_price'))
+    response = []
+    for product in products:
+       d ={}
+       d['product_name']  = product.get('product_name')
+       d['new_Price']  = product.get('new_Price')
+       d['Old_Price']  = product.get('Old_Price')
+       response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)

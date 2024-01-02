@@ -30,8 +30,10 @@ class Employee(models.Model):
         return self.first_name
     
 
-class Category(models.Model):
-    category_id = models.IntegerField(primary_key=True)
+
+
+class Categories(models.Model):
+    category_id = models.SmallIntegerField(primary_key=True)
     category_name = models.CharField(max_length=15)
     description = models.TextField(null=True, blank=True)
     picture = models.BinaryField(null=True, blank=True)
@@ -43,8 +45,9 @@ class Category(models.Model):
         db_table = 'categories'
 
 
-class Supplier(models.Model):
-    supplier_id = models.IntegerField(primary_key=True)
+
+class Suppliers(models.Model):
+    supplier_id = models.SmallIntegerField(primary_key=True)
     company_name = models.CharField(max_length=40)
     contact_name = models.CharField(max_length=30, null=True, blank=True)
     contact_title = models.CharField(max_length=30, null=True, blank=True)
@@ -59,13 +62,16 @@ class Supplier(models.Model):
 
     def __str__(self):
         return self.company_name
+    
+    class Meta:
+        db_table = 'supplier'
 
 
 class Products(models.Model):
     product_id = models.IntegerField(primary_key=True)
     product_name = models.CharField(max_length=40)
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    supplier = models.ForeignKey(Suppliers, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, blank=True)
     quantity_per_unit = models.CharField(max_length=20, null=True, blank=True)
     unit_price = models.FloatField(null=True, blank=True)
     units_in_stock = models.IntegerField(null=True, blank=True)
@@ -83,4 +89,5 @@ class Products(models.Model):
 
 
 
+   
 
