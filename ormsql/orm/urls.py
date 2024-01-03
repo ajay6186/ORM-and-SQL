@@ -9,4 +9,8 @@ urlpatterns = [
     path('select_old_price_and_new_price/', select_old_price_and_new_price),
     path('select_report_with_comment/', select_report_with_comment),
     path('select_distinct/', select_distinct),
+    path('select_distinct_list/', select_distinct_list),
+    path('alias_sql_alias/', alias_sql_alias),
+    path('alias_sql_alias_comprihention/', alias_sql_alias_comprihention),
+    path('reporting_with_concatenation/', reporting_with_concatenation),
 ]

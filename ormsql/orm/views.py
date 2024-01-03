@@ -127,8 +127,6 @@ def select_report_with_comment(request):
        response.append(d)
     return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
 
-# distinct_values = YourModel.objects.values('field1', 'field2').distinct()
-
 @api_view(['GET'])
 def select_distinct(request):
     # DISTINCT ==> remove duplicate
@@ -138,3 +136,47 @@ def select_distinct(request):
     for customer in customers:
         response_dict['country'].append(customer.get('country'))
     return JsonResponse(response_dict, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def select_distinct_list(request):
+    # DISTINCT ==> remove duplicate
+    customers = Customers.objects.values('country').distinct()
+    response_list = list(customers)
+    return JsonResponse(response_list, safe=False, status=status.HTTP_200_OK)
+
+from django.db import models
+@api_view(['GET'])
+def alias_sql_alias(request):
+    employees_data = Employee.objects.values(ID=models.F('employee_id'), NAME=models.F('first_name'),TITLE=models.F('title_of_courtesy'))
+    response_list = list(employees_data)
+    return JsonResponse(response_list, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def alias_sql_alias_comprihention(request):
+    employees_data = Employee.objects.annotate(ID=F('employee_id'), NAME=F('first_name'), TITLE=F('title_of_courtesy')).values('ID','NAME','TITLE')
+    response_list = list(employees_data)
+    return JsonResponse(response_list, safe=False, status=status.HTTP_200_OK)
+
+from django.db.models import F, Value, CharField
+from django.db.models.functions import Concat
+@api_view(['GET'])
+def reporting_with_concatenation(request):
+    employees_data = Employee.objects.annotate(NAME=Concat('title_of_courtesy',Value(' '),'first_name',Value(' '),'last_name',output_field=CharField())).values('NAME')
+    # data = list(employees_data)
+    data = []
+    for employee in employees_data:
+        d ={}
+        d['NAME'] = employee.get('NAME')
+        data.append(d)
+    return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+# from django.db import connection
+# for query in connection.queries:
+#     print(query['sql'])
+#     print("Time:", query['time'])
+#     print()
+# from django.db import connection
+# for query in connection.queries:
+#     print(query['sql'])
+#     print("Time:", query['time'])
+#     print()

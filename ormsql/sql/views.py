@@ -152,3 +152,35 @@ def select_distinct(request):
     for r in result:
         response_dict['country'].append(r[0])
     return JsonResponse(response_dict, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def alias_sql_alias(request):
+    cursor = connection.cursor()
+    cursor.execute("SELECT EMPLOYEE_ID AS ID, FIRST_NAME AS NAME, TITLE_OF_COURTESY AS TITLE FROM EMPLOYEES")
+    columns = [col[0] for col in cursor.description]
+    result = cursor.fetchall()
+    response = []
+    for r in result:
+        d = {}
+        d[columns[0]] =    r[0]
+        d[columns[1]] =    r[1]
+        d[columns[2]] =    r[2]
+        response.append(d)
+    return JsonResponse(response, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def alias_sql_alias_comprihention(request):
+    cursor = connection.cursor()
+    cursor.execute("SELECT EMPLOYEE_ID AS ID, FIRST_NAME AS NAME, TITLE_OF_COURTESY AS TITLE FROM EMPLOYEES")
+    columns = [col[0] for col in cursor.description]
+    data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def reporting_with_concatenation(request):
+    cursor = connection.cursor()
+    # SELECT CONCAT(TITLE_OF_COURTESY,' ', FIRST_NAME) AS NAME FROM EMPLOYEES;
+    cursor.execute("SELECT TITLE_OF_COURTESY||' '|| FIRST_NAME || ' ' || LAST_NAME AS NAME FROM EMPLOYEES;")
+    columns = [col[0] for col in cursor.description]
+    data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    return JsonResponse(data, safe=False, status=status.HTTP_200_OK)
